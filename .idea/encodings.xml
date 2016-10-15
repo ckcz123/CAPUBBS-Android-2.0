@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/BBSActivity.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/Board.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/FavoriteActivity.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/MessageActivity.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/MessagePostActivity.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/PostActivity.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/PostInfo.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/SearchFragment.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/SettingsFragment.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/ThreadInfo.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/TopFragment.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/Userinfo.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/ViewActivity.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/ViewPost.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/ViewThread.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/lib/ImageDownload.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/lib/ImageRequest.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/lib/MyCalendar.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/lib/RequestingTask.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/lib/XML2Json.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/lib/subactivity/GifView.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/lib/subactivity/MyWebView.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/lib/subactivity/Picture.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/lib/subactivity/SubActivity.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/capubbs/lib/webconnection/WebConnection.java" charset="GBK" />
+    <file url="PROJECT" charset="GBK" />
+  </component>
+</project>
