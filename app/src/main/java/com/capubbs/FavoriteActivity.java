@@ -115,7 +115,7 @@ public class FavoriteActivity extends BaseActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.add(Menu.NONE, Constants.MENU_SUBACTIVITY_CLOSE, Constants.MENU_SUBACTIVITY_CLOSE, "")
-                .setIcon(R.drawable.ic_menu_close_clear_cancel).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                .setIcon(R.drawable.ic_close_white_36dp).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return true;
     }
 

@@ -4,7 +4,7 @@
               android:layout_height="fill_parent"
               android:gravity="center">
 
-    <com.pkuhelper.lib.view.GifImageView
+    <com.capubbs.lib.view.GifImageView
         android:id="@+id/subactivity_gifview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

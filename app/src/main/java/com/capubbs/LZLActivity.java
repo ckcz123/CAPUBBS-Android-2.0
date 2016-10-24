@@ -189,7 +189,7 @@ public class LZLActivity extends BaseActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.clear();
         menu.add(Menu.NONE, Constants.MENU_BBS_LZL_POST, Constants.MENU_BBS_LZL_POST, "")
-                .setIcon(android.R.drawable.ic_menu_add).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                .setIcon(R.drawable.ic_reply_white_36dp).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return super.onPrepareOptionsMenu(menu);
     }
 

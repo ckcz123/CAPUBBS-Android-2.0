@@ -45,31 +45,7 @@ public class MyWebView {
         sid = _sid;
     }
 
-    @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
-    public MyWebView showWebView(String title, String url) {
-        subActivity.setTitle("loading...");
-        if (title == null) title = "";
-        title = title.trim();
-        this.title = title;
-        subActivity.setContentView(R.layout.subactivity_webview);
-        swipeRefreshLayout = (SwipeRefreshLayout) subActivity.findViewById(R.id.subactivity_swipeRefreshLayout);
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_purple,
-                android.R.color.holo_green_light,
-                android.R.color.holo_blue_bright,
-                android.R.color.holo_orange_light);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            public void onRefresh() {
-                subActivity.setRefresh();
-            }
-        });
-
-        loading = true;
-        swipeRefreshLayout.setRefreshing(loading);
-        subActivity.invalidateOptionsMenu();
-
-        subActivity.webView =
-                (WebView) subActivity.findViewById(R.id.subactivity_webview);
-        WebView webView = subActivity.webView;
+    private void initWebView(WebView webView) {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.addJavascriptInterface(new JSInterface(subActivity), "imageclick");
         webView.getSettings().setUseWideViewPort(false);
@@ -77,36 +53,31 @@ public class MyWebView {
         webView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
         webView.setHorizontalScrollBarEnabled(false);
         webView.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
-        webView.setDownloadListener(new DownloadListener() {
+        webView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
+            try {
+                CookieManager cookieManager = CookieManager.getInstance();
+                URL url2 = new URL(url);
+                String cookie = cookieManager.getCookie(url2.getHost());
 
-            @Override
-            public void onDownloadStart(String url, String userAgent,
-                                        String contentDisposition, String mimetype, long contentLength) {
-                try {
-                    CookieManager cookieManager = CookieManager.getInstance();
-                    URL url2 = new URL(url);
-                    String cookie = cookieManager.getCookie(url2.getHost());
+                Request request = new Request(Uri.parse(url));
 
-                    Request request = new Request(Uri.parse(url));
+                request.addRequestHeader("Cookie", cookie);
+                request.setMimeType(mimetype);
+                request.allowScanningByMediaScanner();
+                request.setNotificationVisibility(Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                String filename = URLUtil.guessFileName(url, contentDisposition, mimetype);
+                new File(Environment.getExternalStorageDirectory() + "/Download/capubbs/").mkdirs();
+                File file = new File(Environment.getExternalStorageDirectory() + "/Download/capubbs/" + filename);
+                if (file.exists()) file.delete();
+                request.setDestinationUri(Uri.fromFile(file));
+                request.setTitle("正在下载" + filename + "...");
+                request.setDescription("文件保存在" + file.getAbsolutePath());
+                DownloadManager downloadManager = (DownloadManager) subActivity.getSystemService(Context.DOWNLOAD_SERVICE);
+                downloadManager.enqueue(request);
 
-                    request.addRequestHeader("Cookie", cookie);
-                    request.setMimeType(mimetype);
-                    request.allowScanningByMediaScanner();
-                    request.setNotificationVisibility(Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                    String filename = URLUtil.guessFileName(url, contentDisposition, mimetype);
-                    new File(Environment.getExternalStorageDirectory() + "/Download/capubbs/").mkdirs();
-                    File file = new File(Environment.getExternalStorageDirectory() + "/Download/capubbs/" + filename);
-                    if (file.exists()) file.delete();
-                    request.setDestinationUri(Uri.fromFile(file));
-                    request.setTitle("正在下载" + filename + "...");
-                    request.setDescription("文件保存在" + file.getAbsolutePath());
-                    DownloadManager downloadManager = (DownloadManager) subActivity.getSystemService(Context.DOWNLOAD_SERVICE);
-                    downloadManager.enqueue(request);
-
-                    CustomToast.showInfoToast(subActivity, "文件下载中，请在通知栏查看进度");
-                } catch (Exception e) {
-                    subActivity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-                }
+                CustomToast.showInfoToast(subActivity, "文件下载中，请在通知栏查看进度");
+            } catch (Exception e) {
+                subActivity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
             }
         });
         webView.setWebViewClient(new WebViewClient() {
@@ -124,7 +95,7 @@ public class MyWebView {
                 MyWebView.this.title = "";
                 view.loadUrl(url);
                 loading = true;
-                swipeRefreshLayout.setRefreshing(loading);
+                swipeRefreshLayout.setRefreshing(true);
                 subActivity.setTitle("Loading...");
                 subActivity.invalidateOptionsMenu();
                 return true;
@@ -160,21 +131,39 @@ public class MyWebView {
             public boolean onJsAlert(WebView view, String url,
                                      String message, final JsResult result) {
                 new AlertDialog.Builder(subActivity).setTitle("提示").setMessage(message)
-                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                result.confirm();
-                            }
-                        }).setCancelable(true).setOnCancelListener(new DialogInterface.OnCancelListener() {
-
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        result.confirm();
-                    }
-                }).show();
+                        .setPositiveButton("确认", (dialog, which) -> {
+                            result.confirm();
+                        }).setCancelable(true).setOnCancelListener(dialog -> result.confirm()).show();
                 return true;
             }
         });
+    }
+
+    @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
+    public MyWebView showWebView(String title, String url) {
+        subActivity.setTitle("loading...");
+        if (title == null) title = "";
+        title = title.trim();
+        this.title = title;
+        subActivity.setContentView(R.layout.subactivity_webview);
+        swipeRefreshLayout = (SwipeRefreshLayout) subActivity.findViewById(R.id.subactivity_swipeRefreshLayout);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_purple,
+                android.R.color.holo_green_light,
+                android.R.color.holo_blue_bright,
+                android.R.color.holo_orange_light);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            public void onRefresh() {
+                subActivity.setRefresh();
+            }
+        });
+
+        loading = true;
+        swipeRefreshLayout.setRefreshing(loading);
+        subActivity.invalidateOptionsMenu();
+        subActivity.webView =
+                (WebView) subActivity.findViewById(R.id.subactivity_webview);
+        WebView webView = subActivity.webView;
+        initWebView(webView);
         url = url.trim();
         String postArea = subActivity.getIntent().getStringExtra("post");
         if (postArea == null)
@@ -190,20 +179,13 @@ public class MyWebView {
                 android.R.color.holo_green_light,
                 android.R.color.holo_blue_bright,
                 android.R.color.holo_orange_light);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            public void onRefresh() {
-                subActivity.setRefresh();
-            }
-        });
+        swipeRefreshLayout.setOnRefreshListener(() -> subActivity.setRefresh());
         loading = false;
         if (title == null || "".equals(title.trim())) title = "查看网页";
         subActivity.setTitle(title);
         subActivity.webView =
                 (WebView) subActivity.findViewById(R.id.subactivity_webview);
-        subActivity.webView.getSettings().setUseWideViewPort(false);
-        subActivity.webView.setVerticalScrollBarEnabled(false);
-        subActivity.webView.setHorizontalScrollBarEnabled(false);
-        subActivity.webView.getSettings().setJavaScriptEnabled(false);
+        initWebView(subActivity.webView);
         subActivity.webView.loadDataWithBaseURL(null,
                 html, "text/html", "utf-8", null);
         return this;

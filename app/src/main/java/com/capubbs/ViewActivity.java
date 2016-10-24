@@ -20,6 +20,7 @@ import android.widget.ListView;
 
 import com.capubbs.lib.BaseActivity;
 import com.capubbs.lib.Constants;
+import com.capubbs.lib.ImageRequest;
 import com.capubbs.lib.MyBitmapFactory;
 import com.capubbs.lib.MyFile;
 import com.capubbs.lib.Util;
@@ -27,7 +28,11 @@ import com.capubbs.lib.ViewSetting;
 import com.capubbs.lib.subactivity.SubActivity;
 import com.capubbs.lib.view.CustomToast;
 
+import org.jsoup.Jsoup;
 import org.jsoup.examples.HtmlToPlainText;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -43,7 +48,7 @@ public class ViewActivity extends BaseActivity {
     static final int PAGE_THREAD = 1;
     static final int PAGE_POST = 2;
     int showingPage;
-    int urlNum;
+    int urlNum, imgNum;
     String board;
     String boardName;
     String threadid;
@@ -139,6 +144,7 @@ public class ViewActivity extends BaseActivity {
                                             if (bitmap != null) {
                                                 Drawable drawable = new BitmapDrawable(ViewActivity.this.getResources(), bitmap);
                                                 int width=drawable.getIntrinsicWidth(), height=drawable.getIntrinsicHeight();
+                                                width*=1.8;height*=1.8;
                                                 if (width>ViewActivity.listWidth)
                                                 {
                                                     height=(ViewActivity.listWidth*height)/width;
@@ -164,19 +170,19 @@ public class ViewActivity extends BaseActivity {
         if (showingPage == PAGE_THREAD) {
             if (viewThread.page > 1)
                 menu.add(Menu.NONE, Constants.MENU_BBS_VIEW_PREVIOUS, Constants.MENU_BBS_VIEW_PREVIOUS, "")
-                        .setIcon(R.drawable.ic_menu_back).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                        .setIcon(R.drawable.ic_chevron_left_white_36dp).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             if (viewThread.page < viewThread.totalPage)
                 menu.add(Menu.NONE, Constants.MENU_BBS_VIEW_NEXT, Constants.MENU_BBS_VIEW_NEXT, "")
-                        .setIcon(R.drawable.ic_menu_forward).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                        .setIcon(R.drawable.ic_chevron_right_white_36dp).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             menu.add(Menu.NONE, Constants.MENU_BBS_VIEW_POST, Constants.MENU_BBS_VIEW_POST, "发表主题");
         }
         if (showingPage == PAGE_POST) {
             if (viewPost.page > 1)
                 menu.add(Menu.NONE, Constants.MENU_BBS_VIEW_PREVIOUS, Constants.MENU_BBS_VIEW_PREVIOUS, "")
-                        .setIcon(R.drawable.ic_menu_back).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                        .setIcon(R.drawable.ic_chevron_left_white_36dp).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             if (viewPost.page < viewPost.totalPage)
                 menu.add(Menu.NONE, Constants.MENU_BBS_VIEW_NEXT, Constants.MENU_BBS_VIEW_NEXT, "")
-                        .setIcon(R.drawable.ic_menu_forward).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                        .setIcon(R.drawable.ic_chevron_right_white_36dp).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             menu.add(Menu.NONE, Constants.MENU_BBS_FAVORITE, Constants.MENU_BBS_FAVORITE,
                     "收藏此主题帖");
             menu.add(Menu.NONE, Constants.MENU_BBS_VIEW_POST, Constants.MENU_BBS_VIEW_POST, "回复");
@@ -262,6 +268,7 @@ public class ViewActivity extends BaseActivity {
             menu.add(Menu.NONE, Constants.CONTEXT_MENU_BBS_EDIT,
                     Constants.CONTEXT_MENU_BBS_EDIT, "编辑");
 
+            // 检测文中是否存在URL
             urlNum = 0;
             Matcher matcher = Patterns.WEB_URL.matcher(content);
             ArrayList<String> urls=new ArrayList<>();
@@ -334,6 +341,25 @@ public class ViewActivity extends BaseActivity {
                 }
             }
 
+            // 检测文中是否存在image
+            Document document=Jsoup.parse(content);
+            Elements imgs=document.getElementsByTag("img");
+            imgNum=0;
+            for (int i=0;i<imgs.size();i++) {
+                Element img=imgs.get(i);
+                String src=img.attr("src");
+                if (src==null || "".equals(src)) continue;
+                if (src.startsWith("/bbsimg/expr") || src.matches("/bbsimg/[\\d]+\\.gif")) continue;
+                if (src.startsWith("/")) src="http://www.chexie.net"+src;
+                if (src.startsWith("../")) src="http://www.chexie.net/bbs"+src.substring(2);
+
+                menu.add(Menu.NONE, Constants.CONTEXT_MENU_BBS_IMAGE + imgNum, Constants.CONTEXT_MENU_BBS_IMAGE + imgNum,
+                        "图片："+src);
+
+                imgNum++;
+
+            }
+
         }
     }
 
@@ -400,6 +426,11 @@ public class ViewActivity extends BaseActivity {
             intent.putExtra("type", Constants.SUBACTIVITY_TYPE_WEBVIEW);
             intent.putExtra("url", url);
             startActivity(intent);
+            return true;
+        }
+        if (id>=Constants.CONTEXT_MENU_BBS_IMAGE && id<=Constants.CONTEXT_MENU_BBS_IMAGE+imgNum) {
+            String url = item.getTitle().toString().replace("图片：","");
+            ImageRequest.showImage(this, url);
             return true;
         }
         return super.onContextItemSelected(item);

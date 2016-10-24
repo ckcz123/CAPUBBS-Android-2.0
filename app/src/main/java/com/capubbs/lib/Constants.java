@@ -5,8 +5,8 @@ package com.capubbs.lib;
  */
 public class Constants {
 
-    public static final String version = "2.0";
-    public static final String update_time = "2016-10-15";
+    public static final String version = "2.0.1";
+    public static final String update_time = "2016-10-24";
 
     public static final String bbs_url = "http://www.chexie.net/api/client.php";
 
@@ -49,14 +49,14 @@ public class Constants {
     public static final int SUBACTIVITY_TYPE_WEBVIEW_HTML = 30022;
 
     public static final int CONTEXT_MENU_BBS_FAVORITE = 15200;
-    public static final int CONTEXT_MENU_BBS_ATTACHES = 15201;
-    public static final int CONTEXT_MENU_BBS_IMAGES = 15202;
     public static final int CONTEXT_MENU_BBS_POST_LZL = 15203;
     public static final int CONTEXT_MENU_BBS_POST = 15204;
     public static final int CONTEXT_MENU_BBS_MESSAGE = 15205;
     public static final int CONTEXT_MENU_BBS_EDIT = 15206;
     public static final int CONTEXT_MENU_BBS_URL = 15207;
-    // do not use 15208-15299 !!!
+    // do not use 15208-15249 !!!
+    public static final int CONTEXT_MENU_BBS_IMAGE = 15250;
+    // do not use 15251-15299 !!!
     public static final int CONTEXT_MENU_BBS_PICTURE = 15260;
     public static final int CONTEXT_MENU_SUBACTIVITY_SHARE_PICTURE = 15300;
     public static final int CONTEXT_MENU_SUBACTIVITY_SAVE_PICTURE = 15301;

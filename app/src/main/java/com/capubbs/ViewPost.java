@@ -129,6 +129,7 @@ public class ViewPost {
                                         if (bitmap != null) {
                                             Drawable drawable = new BitmapDrawable(viewActivity.getResources(), bitmap);
                                             int width=drawable.getIntrinsicWidth(), height=drawable.getIntrinsicHeight();
+                                            width*=1.8;height*=1.8;
                                             if (width>ViewActivity.listWidth)
                                             {
                                                 height=(ViewActivity.listWidth*height)/width;

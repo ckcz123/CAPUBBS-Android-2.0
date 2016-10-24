@@ -93,7 +93,17 @@ public class SettingsFragment extends Fragment {
             intent.putExtra("type", Constants.SUBACTIVITY_TYPE_ABOUT);
             context.startActivity(intent);
         });
-        if (!"".equals(Constants.updateVersion) || !Constants.version.equals(Constants.updateVersion)) {
+        ViewSetting.setOnClickListener(settingsView, R.id.settings_source, v-> {
+            String html = "<html><meta charset='utf8'><script>window." +
+                    "setTimeout(\"location.href='https://github.com/ckcz123/CAPUBBS-Android-2.0'\", 3000);</script>" +
+                    context.getResources().getString(R.string.settings_source_hint)+"</html>";
+            Intent intent=new Intent(context, SubActivity.class);
+            intent.putExtra("type",Constants.SUBACTIVITY_TYPE_WEBVIEW_HTML);
+            intent.putExtra("html",html);
+            intent.putExtra("title","获取源代码");
+            context.startActivity(intent);
+        });
+        if (!"".equals(Constants.updateVersion) && !Constants.version.equals(Constants.updateVersion)) {
             ViewSetting.setTextView(settingsView, R.id.settings_update, "检查更新       ");
             BadgeView.show(context, settingsView.findViewById(R.id.settings_update), "new");
         }

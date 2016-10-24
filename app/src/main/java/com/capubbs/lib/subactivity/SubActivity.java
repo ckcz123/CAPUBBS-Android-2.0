@@ -159,24 +159,24 @@ public class SubActivity extends BaseActivity {
         if (type == Constants.SUBACTIVITY_TYPE_WEBVIEW) {
             if (myWebView != null && !myWebView.loading) {
                 menu.add(Menu.NONE, Constants.MENU_SUBACTIVITY_OPEN_IN_BROWSER, Constants.MENU_SUBACTIVITY_OPEN_IN_BROWSER, "")
-                        .setIcon(R.drawable.ic_menu_set_as).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                        .setIcon(R.drawable.ic_open_in_new_white_36dp).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
                 menu.add(Menu.NONE, Constants.MENU_SUBACTIVITY_SHARE, Constants.MENU_SUBACTIVITY_SHARE, "")
-                        .setIcon(R.drawable.ic_menu_share).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                        .setIcon(R.drawable.ic_share_white_36dp).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             }
         }
         if (type == Constants.SUBACTIVITY_TYPE_PICTURE_FILE) {
             menu.add(Menu.NONE, Constants.MENU_SUBACTIVITY_SHARE, Constants.MENU_SUBACTIVITY_SHARE, "")
-                    .setIcon(R.drawable.ic_menu_share).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                    .setIcon(R.drawable.ic_share_white_36dp).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             menu.add(Menu.NONE, Constants.MENU_SUBACTIVITY_SAVE_PICTURE, Constants.MENU_SUBACTIVITY_SAVE_PICTURE, "")
-                    .setIcon(R.drawable.ic_menu_save).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                    .setIcon(R.drawable.ic_save_white_36dp).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         }
         if (type == Constants.SUBACTIVITY_TYPE_PICTURE_GIF) {
             menu.add(Menu.NONE, Constants.MENU_SUBACTIVITY_SAVE_PICTURE, Constants.MENU_SUBACTIVITY_SAVE_PICTURE, "")
-                    .setIcon(R.drawable.ic_menu_save).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                    .setIcon(R.drawable.ic_save_white_36dp).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
         menu.add(Menu.NONE, Constants.MENU_SUBACTIVITY_CLOSE, Constants.MENU_SUBACTIVITY_CLOSE, "")
-                .setIcon(R.drawable.ic_menu_close_clear_cancel).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                .setIcon(R.drawable.ic_close_white_36dp).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return true;
     }
 
