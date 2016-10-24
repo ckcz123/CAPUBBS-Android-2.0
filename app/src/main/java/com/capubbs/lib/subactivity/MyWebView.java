@@ -93,6 +93,7 @@ public class MyWebView {
                     subActivity.invalidateOptionsMenu();
                 }
                 MyWebView.this.title = "";
+                subActivity.url=url;
                 view.loadUrl(url);
                 loading = true;
                 swipeRefreshLayout.setRefreshing(true);

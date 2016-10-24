@@ -180,6 +180,16 @@ public class ViewPost {
             return false;
         });
         listView.setOnItemClickListener((parent, view, position, id) -> {
+
+            if (!Editor.getBoolean(viewActivity, "hint_post", false)) {
+                new android.support.v7.app.AlertDialog.Builder(viewActivity)
+                        .setTitle("使用提示").setMessage("如果帖子不存在楼中楼，则单击帖子和长按帖子均会" +
+                        "呼出菜单。\n如果帖子存在楼中楼，则单击帖子查看楼中楼，长按帖子呼出菜单。\n\n此提示将不再显示。")
+                        .setPositiveButton("我知道了",null).show();
+                Editor.putBoolean(viewActivity, "hint_post", true);
+                return;
+            }
+
             index = position;
             PostInfo postInfo=postInfos.get(position);
             if (postInfo.lzl!=0) {

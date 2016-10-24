@@ -156,8 +156,9 @@ public class SubActivity extends BaseActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.clear();
 
-        if (type == Constants.SUBACTIVITY_TYPE_WEBVIEW) {
-            if (myWebView != null && !myWebView.loading) {
+        if (type == Constants.SUBACTIVITY_TYPE_WEBVIEW
+                || type == Constants.SUBACTIVITY_TYPE_WEBVIEW_HTML) {
+            if (myWebView != null && !myWebView.loading && !"".equals(url)) {
                 menu.add(Menu.NONE, Constants.MENU_SUBACTIVITY_OPEN_IN_BROWSER, Constants.MENU_SUBACTIVITY_OPEN_IN_BROWSER, "")
                         .setIcon(R.drawable.ic_open_in_new_white_36dp).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
                 menu.add(Menu.NONE, Constants.MENU_SUBACTIVITY_SHARE, Constants.MENU_SUBACTIVITY_SHARE, "")

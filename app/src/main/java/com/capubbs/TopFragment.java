@@ -4,13 +4,17 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.capubbs.lib.Constants;
+import com.capubbs.lib.Editor;
 import com.capubbs.lib.MyCalendar;
 import com.capubbs.lib.RequestingTask;
 import com.capubbs.lib.ViewSetting;
@@ -110,6 +114,15 @@ public class TopFragment extends Fragment {
         });
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
+
+            if (!Editor.getBoolean(bbsActivity, "hint_top", false)) {
+                new AlertDialog.Builder(bbsActivity)
+                        .setTitle("使用提示").setMessage("单击热点可查看最新回复；长按热点可查看该主题。\n\n此提示将不再显示。")
+                        .setPositiveButton("我知道了",null).show();
+                Editor.putBoolean(bbsActivity, "hint_top", true);
+                return;
+            }
+
             ThreadInfo threadInfo = tops.get(position);
             Intent intent = new Intent(bbsActivity, ViewActivity.class);
             intent.putExtra("bid", threadInfo.board);
@@ -117,6 +130,16 @@ public class TopFragment extends Fragment {
             intent.putExtra("pid", threadInfo.pid);
             intent.putExtra("type", "thread");
             bbsActivity.startActivity(intent);
+        });
+
+        listView.setOnItemLongClickListener((parent, view, position, id) -> {
+            ThreadInfo threadInfo = tops.get(position);
+            Intent intent = new Intent(bbsActivity, ViewActivity.class);
+            intent.putExtra("bid", threadInfo.board);
+            intent.putExtra("tid", threadInfo.threadid + "");
+            intent.putExtra("type", "thread");
+            bbsActivity.startActivity(intent);
+            return true;
         });
 
     }
