@@ -141,7 +141,8 @@ public class SubActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            if (type == Constants.SUBACTIVITY_TYPE_WEBVIEW && webView.canGoBack()) {
+            if ((type == Constants.SUBACTIVITY_TYPE_WEBVIEW
+                    || type==Constants.SUBACTIVITY_TYPE_WEBVIEW_HTML) && webView.canGoBack()) {
                 webView.goBack();
                 return true;
             }
