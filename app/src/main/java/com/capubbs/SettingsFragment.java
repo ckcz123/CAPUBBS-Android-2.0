@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.capubbs.lib.Constants;
 import com.capubbs.lib.Editor;
 import com.capubbs.lib.MyFile;
+import com.capubbs.lib.Share;
 import com.capubbs.lib.ViewSetting;
 import com.capubbs.lib.json.JSONArray;
 import com.capubbs.lib.json.JSONObject;
@@ -103,6 +104,9 @@ public class SettingsFragment extends Fragment {
             intent.putExtra("title","获取源代码");
             context.startActivity(intent);
         });
+        ViewSetting.setOnClickListener(settingsView, R.id.settings_share, v -> Share.readyToShareURL(context,
+                "推荐给好友", Constants.updateURL, "欢迎使用CAPUBBS Android "+Constants.updateVersion,
+                "新版Android CAPUBBS，欢迎您的使用~", null));
         if (!"".equals(Constants.updateVersion) && !Constants.version.equals(Constants.updateVersion)) {
             ViewSetting.setTextView(settingsView, R.id.settings_update, "检查更新       ");
             BadgeView.show(context, settingsView.findViewById(R.id.settings_update), "new");

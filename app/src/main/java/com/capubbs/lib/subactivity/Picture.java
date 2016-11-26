@@ -126,8 +126,8 @@ public class Picture {
             CustomToast.showErrorToast(subActivity, "此图片不可被分享");
             return;
         }
-        //Share.readyToShareImage(subActivity, "分享图片", bitmap);
-        CustomToast.showInfoToast(subActivity,"分享功能暂时还未上线！");
+        Share.readyToShareImage(subActivity, "分享图片", bitmap);
+        //CustomToast.showInfoToast(subActivity,"分享功能暂时还未上线！");
     }
 
     public void decodePicture(final String string) {

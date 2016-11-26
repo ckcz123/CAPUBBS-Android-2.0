@@ -31,21 +31,28 @@ public class ViewThread {
     int tmpPage;
     int totalPage;
     int selection;
+    boolean isExtr;
 
     ViewActivity viewActivity;
-    public ViewThread(ViewActivity activity) {viewActivity=activity;}
+    public ViewThread(ViewActivity activity) {viewActivity=activity;isExtr=false;}
 
-    @SuppressWarnings("unchecked")
+
     public void getThreads(int page) {
+        getThreads(page, isExtr);
+    }
+    @SuppressWarnings("unchecked")
+    public void getThreads(int page, boolean extr) {
         ArrayList<Parameters> arrayList = new ArrayList<Parameters>();
         arrayList.add(new Parameters("ask", "show"));
         arrayList.add(new Parameters("p", page + ""));
         arrayList.add(new Parameters("bid", viewActivity.board));
         arrayList.add(new Parameters("token", Userinfo.token));
+        if (extr) arrayList.add(new Parameters("extr", "1"));
         new RequestingTask(viewActivity, "正在获取内容...",
                 Constants.bbs_url, Constants.REQUEST_BBS_GET_LIST)
                 .execute(arrayList);
         tmpPage = page;
+        isExtr=extr;
     }
 
     void finishRequest(String string) {

@@ -120,7 +120,7 @@ public class BBSActivity extends BaseActivity {
         resetAllTab();
         ((ImageView) findViewById(R.id.bbs_bottom_img_settings)).getDrawable().setColorFilter(Color.parseColor("#2d90dc"), PorterDuff.Mode.MULTIPLY);
         ((TextView) findViewById(R.id.bbs_bottom_settings)).setTextColor(Color.parseColor("#2d90dc"));
-        setTitle("个人信息");
+        setTitle("设置");
     }
 
     @Override

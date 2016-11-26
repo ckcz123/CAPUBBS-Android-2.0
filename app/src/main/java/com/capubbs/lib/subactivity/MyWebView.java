@@ -31,7 +31,6 @@ import java.util.HashMap;
 
 public class MyWebView {
     SubActivity subActivity;
-    int sid;
     String title;
     boolean loading;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -40,19 +39,24 @@ public class MyWebView {
         subActivity = _sub;
     }
 
-    public MyWebView(SubActivity _sub, int _sid) {
-        subActivity = _sub;
-        sid = _sid;
-    }
 
-    private void initWebView(WebView webView) {
+    private void initWebView(WebView webView, boolean single_column) {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.addJavascriptInterface(new JSInterface(subActivity), "imageclick");
-        webView.getSettings().setUseWideViewPort(false);
         //webView.setVerticalScrollBarEnabled(false);
         webView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
-        webView.setHorizontalScrollBarEnabled(false);
-        webView.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+        if (single_column) {
+            webView.getSettings().setUseWideViewPort(false);
+            webView.setHorizontalScrollBarEnabled(false);
+            webView.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+        }
+        else {
+            webView.getSettings().setUseWideViewPort(true);
+            webView.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+            webView.getSettings().setSupportZoom(true);
+            webView.getSettings().setLoadWithOverviewMode(true);
+            webView.getSettings().setBuiltInZoomControls(true);
+        }
         webView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
             try {
                 CookieManager cookieManager = CookieManager.getInstance();
@@ -88,10 +92,6 @@ public class MyWebView {
                     return true;
                 }
 
-                if (sid != 0) {
-                    sid = 0;
-                    subActivity.invalidateOptionsMenu();
-                }
                 MyWebView.this.title = "";
                 subActivity.url=url;
                 view.loadUrl(url);
@@ -164,7 +164,7 @@ public class MyWebView {
         subActivity.webView =
                 (WebView) subActivity.findViewById(R.id.subactivity_webview);
         WebView webView = subActivity.webView;
-        initWebView(webView);
+        initWebView(webView, subActivity.getIntent().getBooleanExtra("single_column", true));
         url = url.trim();
         String postArea = subActivity.getIntent().getStringExtra("post");
         if (postArea == null)
@@ -186,7 +186,7 @@ public class MyWebView {
         subActivity.setTitle(title);
         subActivity.webView =
                 (WebView) subActivity.findViewById(R.id.subactivity_webview);
-        initWebView(subActivity.webView);
+        initWebView(subActivity.webView, subActivity.getIntent().getBooleanExtra("single_column", true));
         subActivity.webView.loadDataWithBaseURL(null,
                 html, "text/html", "utf-8", null);
         return this;

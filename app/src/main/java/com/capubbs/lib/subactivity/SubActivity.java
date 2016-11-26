@@ -91,7 +91,7 @@ public class SubActivity extends BaseActivity {
             gifView = new GifView(this).showGif(bundle.getString("file")
                     , bundle.getString("title", "查看图片"));
         else if (type == Constants.SUBACTIVITY_TYPE_WEBVIEW)
-            myWebView = new MyWebView(this, bundle.getInt("sid"))
+            myWebView = new MyWebView(this)
                     .showWebView(bundle.getString("title", ""), url);
         else if (type == Constants.SUBACTIVITY_TYPE_WEBVIEW_HTML)
             myWebView = new MyWebView(this).showWebHtml(bundle.getString("title", "查看网页"),

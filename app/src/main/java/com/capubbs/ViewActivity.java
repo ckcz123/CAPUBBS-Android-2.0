@@ -174,6 +174,8 @@ public class ViewActivity extends BaseActivity {
             if (viewThread.page < viewThread.totalPage)
                 menu.add(Menu.NONE, Constants.MENU_BBS_VIEW_NEXT, Constants.MENU_BBS_VIEW_NEXT, "")
                         .setIcon(R.drawable.ic_chevron_right_white_36dp).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            menu.add(Menu.NONE, Constants.MENU_BBS_VIEW_EXTR, Constants.MENU_BBS_VIEW_EXTR,
+                    viewThread.isExtr?"查看全部":"查看精品区");
             menu.add(Menu.NONE, Constants.MENU_BBS_VIEW_POST, Constants.MENU_BBS_VIEW_POST, "发表主题");
         }
         if (showingPage == PAGE_POST) {
@@ -187,6 +189,7 @@ public class ViewActivity extends BaseActivity {
                     "收藏此主题帖");
             menu.add(Menu.NONE, Constants.MENU_BBS_VIEW_POST, Constants.MENU_BBS_VIEW_POST, "回复");
             menu.add(Menu.NONE, Constants.MENU_BBS_VIEW_SHARE, Constants.MENU_BBS_VIEW_SHARE, "分享");
+            menu.add(Menu.NONE, Constants.MENU_BBS_OPEN_IN_BROWSER, Constants.MENU_BBS_OPEN_IN_BROWSER, "用浏览器打开");
         }
         menu.add(Menu.NONE, Constants.MENU_BBS_VIEW_JUMP, Constants.MENU_BBS_VIEW_JUMP, "跳页");
         menu.add(Menu.NONE, Constants.MENU_BBS_VIEW_EXIT, Constants.MENU_BBS_VIEW_EXIT, "返回首页");
@@ -208,6 +211,10 @@ public class ViewActivity extends BaseActivity {
                 viewThread.getThreads(viewThread.page + 1);
             else if (showingPage == PAGE_POST)
                 viewPost.getPosts(threadid, viewPost.page + 1);
+            return true;
+        }
+        if (id == Constants.MENU_BBS_VIEW_EXTR) {
+            viewThread.getThreads(1, !viewThread.isExtr);
             return true;
         }
         if (id == Constants.MENU_BBS_FAVORITE) {
@@ -244,6 +251,15 @@ public class ViewActivity extends BaseActivity {
             } else if (showingPage == PAGE_POST) {
                 viewPost.jump();
             }
+            return true;
+        }
+        if (id == Constants.MENU_BBS_OPEN_IN_BROWSER) {
+            String url="https://www.chexie.net/bbs/content/?bid="+board+"&tid="+viewPost.tmpThreadid;
+            Intent intent=new Intent(this, SubActivity.class);
+            intent.putExtra("type", Constants.SUBACTIVITY_TYPE_WEBVIEW);
+            intent.putExtra("url", url);
+            intent.putExtra("single_column", false);
+            startActivity(intent);
             return true;
         }
         if (id == Constants.MENU_BBS_VIEW_EXIT) {

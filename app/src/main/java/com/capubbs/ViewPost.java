@@ -21,6 +21,7 @@ import com.capubbs.lib.MyBitmapFactory;
 import com.capubbs.lib.MyCalendar;
 import com.capubbs.lib.MyFile;
 import com.capubbs.lib.RequestingTask;
+import com.capubbs.lib.Share;
 import com.capubbs.lib.Util;
 import com.capubbs.lib.ViewSetting;
 import com.capubbs.lib.XML2Json;
@@ -65,19 +66,25 @@ public class ViewPost {
 
     void finishRequest(String string) {
         try {
-            int tmpNum = selectNum;
-            selectNum = 0;
-            selection = 0;
 
             JSONArray jsonArray=new JSONArray(string);
             int code = jsonArray.getJSONObject(0).getInt("code");
             if (code != 0 && code != -1) {
+
+                if (code==1 && tmpPage>1) {
+                    getPosts(tmpThreadid, tmpPage-1);
+                    return;
+                }
+
                 CustomToast.showErrorToast(viewActivity,
                         jsonArray.getJSONObject(0).optString("msg", XML2Json.getErrorMessage(code)));
                 viewActivity.setContentView(R.layout.bbs_thread_listview);
                 viewActivity.showingPage = ViewActivity.PAGE_THREAD;
                 return;
             }
+            int tmpNum = selectNum;
+            selectNum = 0;
+            selection = 0;
             totalPage = jsonArray.getJSONObject(0).getInt("pages");
             title = jsonArray.getJSONObject(0).optString("title");
             postInfos.clear();
@@ -224,7 +231,9 @@ public class ViewPost {
     }
 
     public void share() {
-        CustomToast.showInfoToast(viewActivity, "分享功能暂缓上线！");
+        //CustomToast.showInfoToast(viewActivity, "分享功能暂缓上线！");
+        String url="https://www.chexie.net/bbs/content/?bid="+viewActivity.board+"&tid="+tmpThreadid;
+        Share.readyToShareURL(viewActivity, "分享", url, title, "分享自CAPUBBS (Android "+Constants.version+")", null);
     }
 
 }
