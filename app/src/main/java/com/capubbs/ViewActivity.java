@@ -28,12 +28,6 @@ import com.capubbs.lib.ViewSetting;
 import com.capubbs.lib.subactivity.SubActivity;
 import com.capubbs.lib.view.CustomToast;
 
-import org.jsoup.Jsoup;
-import org.jsoup.examples.HtmlToPlainText;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -356,7 +350,7 @@ public class ViewActivity extends BaseActivity {
                     urlNum++;
                 }
             }
-
+/*
             // 检测文中是否存在image
             Document document=Jsoup.parse(content);
             Elements imgs=document.getElementsByTag("img");
@@ -374,6 +368,13 @@ public class ViewActivity extends BaseActivity {
 
                 imgNum++;
 
+            }
+*/
+            imgNum=0;
+            for (String src: postInfo.imgs) {
+                menu.add(Menu.NONE, Constants.CONTEXT_MENU_BBS_IMAGE + imgNum, Constants.CONTEXT_MENU_BBS_IMAGE + imgNum,
+                        "图片："+src);
+                imgNum++;
             }
 
         }

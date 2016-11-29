@@ -118,18 +118,24 @@ public class ViewPost {
 
             @SuppressLint("ViewHolder")
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
+            public View getView(final int position, View convertView, ViewGroup parent) {
                 convertView = viewActivity.getLayoutInflater().inflate(R.layout.bbs_post_item,
                         parent, false);
                 final PostInfo postInfo = postInfos.get(position);
 
                 ViewSetting.setTextView(convertView, R.id.bbs_post_item_text,
-                        Html.fromHtml(postInfo.content+(!"".equals(new String(postInfo.sig).trim())?("<br><br>--<br>"+postInfo.sig):"")+"<br>", source -> {
+                        Html.fromHtml(postInfo.content+(!"".equals(postInfo.sig.trim())?("<br><br>--<br>"+postInfo.sig):"")+"<br>", source -> {
                                     if (source == null) return null;
                                     if (source.startsWith("/"))
                                         source = "http://www.chexie.net" + source;
                                     else if (source.startsWith("../"))
                                         source = "http://www.chexie.net/bbs"+source.substring(2);
+
+                                    if (!source.startsWith("http://www.chexie.net/bbsimg/expr")
+                                        && !source.matches("http://www\\.chexie\\.net/bbsimg/[\\d]+\\.gif")
+                                        && !postInfos.get(position).imgs.contains(source))
+                                        postInfos.get(position).imgs.add(source);
+
                                     final File file = MyFile.getCache(viewActivity, Util.getHash(source));
                                     if (file.exists()) {
                                         Bitmap bitmap = MyBitmapFactory.getCompressedBitmap(file.getAbsolutePath(), 2.5);
