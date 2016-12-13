@@ -21,6 +21,7 @@ import android.webkit.WebView;
 import com.capubbs.R;
 import com.capubbs.lib.BaseActivity;
 import com.capubbs.lib.Constants;
+import com.capubbs.lib.Share;
 import com.capubbs.lib.ViewSetting;
 import com.capubbs.lib.view.CustomToast;
 
@@ -193,7 +194,7 @@ public class SubActivity extends BaseActivity {
             return true;
         }
         if (id == Constants.MENU_SUBACTIVITY_SHARE) {
-/*			if (webView != null) {
+			if (webView != null) {
 				String url = webView.getUrl();
 				if (url == null || "".equals(url)) {
 					url = this.url;
@@ -205,16 +206,10 @@ public class SubActivity extends BaseActivity {
 				if (content == null || "".equals(content))
 					content = getIntent().getStringExtra("content");
 				if (content == null) content = "详情请点击查看";
-				Bitmap bitmap = null;
-				if (getIntent().getBooleanExtra("hasBitmap", false)) {
-					bitmap = (Bitmap) DataObject.getInstance().getObject();
-				}
-				Share.readyToShareURL(this, "分享网页", url, title, content, bitmap);
+				Share.readyToShareURL(this, "分享网页", url, title, content, null);
 			} else if (type == Constants.SUBACTIVITY_TYPE_PICTURE_FILE) {
 				picture.sharePicture();
 			}
-*/
-            CustomToast.showInfoToast(this,"分享功能暂缓上线，敬请期待~");
             return true;
         }
         if (id == Constants.MENU_SUBACTIVITY_SAVE_PICTURE

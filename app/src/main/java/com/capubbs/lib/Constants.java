@@ -5,10 +5,10 @@ package com.capubbs.lib;
  */
 public class Constants {
 
-    public static final String version = "2.0.2.1";
-    public static final String update_time = "2016-11-29";
+    public static final String version = "2.0.2.2";
+    public static final String update_time = "2016-12-14";
 
-    public static final String bbs_url = "http://www.chexie.net/api/client.php";
+    public static final String bbs_url = "https://www.chexie.net/api/client.php";
 
     public static final int REQUEST_BBS_GET_TOP = 1600;
     public static final int REQUEST_BBS_LOGIN = 1602;

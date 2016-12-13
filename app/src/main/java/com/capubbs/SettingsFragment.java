@@ -107,13 +107,13 @@ public class SettingsFragment extends Fragment {
         ViewSetting.setOnClickListener(settingsView, R.id.settings_share, v -> Share.readyToShareURL(context,
                 "推荐给好友", Constants.updateURL, "欢迎使用CAPUBBS Android "+Constants.updateVersion,
                 "新版Android CAPUBBS，欢迎您的使用~", null));
-        if (!"".equals(Constants.updateVersion) && !Constants.version.equals(Constants.updateVersion)) {
+        if (!"".equals(Constants.updateVersion) && Constants.version.compareTo(Constants.updateVersion)<0) {
             ViewSetting.setTextView(settingsView, R.id.settings_update, "检查更新       ");
             BadgeView.show(context, settingsView.findViewById(R.id.settings_update), "new");
         }
 
         ViewSetting.setOnClickListener(settingsView, R.id.settings_update, v -> {
-            if ("".equals(Constants.updateVersion) || Constants.version.equals(Constants.updateVersion))
+            if ("".equals(Constants.updateVersion) || Constants.version.compareTo(Constants.updateVersion)>=0)
                 CustomToast.showInfoToast(context, "已是最新版！");
             else {
                 new AlertDialog.Builder(context).setTitle("存在版本"+Constants.updateVersion+"更新！")
@@ -171,7 +171,7 @@ public class SettingsFragment extends Fragment {
             Constants.updateURL=jsonObject.optString("updateurl");
             Constants.updateMsg=jsonObject.optString("updatetext");
 
-            if (!"".equals(Constants.updateVersion) && !Constants.version.equals(Constants.updateVersion)) {
+            if (!"".equals(Constants.updateVersion) && Constants.version.compareTo(Constants.updateVersion)<0) {
                 BadgeView.show(bbsActivity, bbsActivity.findViewById(R.id.bbs_bottom_img_settings), "new");
                 if (settingsView!=null) {
                     ViewSetting.setTextView(settingsView, R.id.settings_update, "检查更新       ");

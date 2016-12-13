@@ -60,7 +60,6 @@ public class Picture {
             @Override
             public void run() {
                 if (bitmap != null) {
-                    // TODO: 16/9/5 fix bug qr code
                     subActivity.handler.sendMessage(Message.obtain(subActivity.handler,
                             Constants.MESSAGE_SUBACTIVITY_DECODE_PICTURE,
                             MyBitmapFactory.decodeQRCode(bitmap)));
